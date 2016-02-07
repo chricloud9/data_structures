@@ -1,0 +1,10 @@
+ g++ main.cpp
+main.cpp:23:9: error: no matching function for call to 'replace'
+        replace(table, argv[4], argv[5]);
+        ^~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/algorithm:1980:1: note: 
+      candidate function template not viable: requires 4 arguments, but 3 were
+      provided
+replace(_ForwardIterator __first, _ForwardIterator __last, const _Tp& __...
+^
+1 error generated.

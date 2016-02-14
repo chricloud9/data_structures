@@ -7,7 +7,7 @@ Time::Time(){
     second = 0;
 }
 
-Time:Time(int h, int m, int s){
+Time::Time(int h, int m, int s){
     hour = h;
     minute = m;
     second = s;

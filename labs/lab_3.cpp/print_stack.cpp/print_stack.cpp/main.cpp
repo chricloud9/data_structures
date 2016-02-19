@@ -6,6 +6,7 @@
 #include <vector>
 #include <iomanip>
 #include <string>
+#include "Time.h"
 
 
 // NOTE: For this lab we'll use "uintptr_t", a specially defined
@@ -118,7 +119,19 @@ void clear_stack_labels() {
 
 // ==============================================================================
 
-
+void change_times(Time& t1,Time t2){
+    uintptr_t sec = 30;
+    uintptr_t min = 15;
+    uintptr_t hr = 2;
+    t1.setSecond(t1.getSecond()+sec);
+    t1.setMinute(t1.getMinute()+min);
+    t1.setHour(t1.getHour()+hr);
+    t2.setSecond(t2.getSecond()+sec);
+    t2.setMinute(t2.getMinute()+min);
+    t2.setHour(t2.getHour()+hr);
+    label_stack((uintptr_t*)&t2,"t2changed");
+    label_stack((uintptr_t*)&t1,"t1changed");
+}
 int main() {
     
     // ------------------------------
@@ -142,13 +155,30 @@ int main() {
     label_stack(&z,"z");
     
     // print the range of the stack containing these addresses
-    print_stack();
+//    print_stack();
     
     // clear the previous labels
-    clear_stack_labels();
+//    clear_stack_labels();
     
+    Time t1;
+    std::cout<<"size of Time: " <<sizeof(Time) << std::endl;
+    std::cout<<"size of t1: " <<sizeof(t1)<< std::endl;
+    t1.setHour(6);
     
+    std::cout <<"size of modified t1: " << sizeof(t1) << endl;
+    t1.setMinute(8);
+    std::cout <<"size of modified t1(2): " << sizeof(t1) << endl;
     // continue with lab exercises
+    Time t47(0,47,47);
+    Time t48(1,48,48);
+    label_stack((uintptr_t*)&t47,"t47");
+    label_stack((uintptr_t*)&t48,"t48");
+    std::cout <<"size of t47: " << sizeof(t47) << endl;
+    std::cout <<"size of t48: " << sizeof(t48) << endl;
+    change_times(t47, t48);
+    std::cout <<"size of modified t47: " << sizeof(t47) << endl;
+    std::cout <<"size of modified t48: " << sizeof(t48) << endl;
+    print_stack();
     
     
 }

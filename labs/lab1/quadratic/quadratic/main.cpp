@@ -40,6 +40,7 @@ int main() {
     while (true) {
         std::cout << "Enter 3 integer coefficients to a quadratic function: a*x*x + b*x + c = 0" << std::endl;
         int my_a, my_b, my_c;
+
         std::cin >> my_a >> my_b >> my_c;
         // create a place to store the roots
         float root_1, root_2;

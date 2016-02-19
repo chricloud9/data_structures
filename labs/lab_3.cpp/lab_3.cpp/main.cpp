@@ -7,12 +7,13 @@
 //
 
 #include <iostream>
+#include "time.h"
 using namespace std;
 
 void compute_squares(int a[], int b[], int n);
-
 int main() {
     // insert code here...
+    Time t1;
     int n = 4;
     int a[n];
     int b[n];
@@ -29,7 +30,7 @@ int main() {
         if( a[i] == 2 && b[i] == 4)
             cout << "the element was squared" <<endl;
     }
-
+    cout << sizeof(t1) << endl;
     return 0;
 }
 

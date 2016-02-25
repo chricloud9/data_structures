@@ -22,5 +22,5 @@ private:
     int width;
     int *heights;
     char **data;
-    char** board = new char*[get_width()];
+    
 };

@@ -51,22 +51,65 @@ void test_example() {
     
     Tetris tetris(6);
     std::cout << "empty board with width = 6:" << std::endl;
-    tetris.print();
+//    tetris.print();
     assert (tetris.get_width() == 6);
     
-    tetris.add_piece('I',0,0);
-    std::cout << "after adding first piece:" << std::endl;
+//    tetris.add_piece('I',0,0);
+//    std::cout << "after adding first piece:" << std::endl;
     tetris.print();
-    // test the O piece
-    std::cout<< "test O" <<std::endl;
+//    // test the O piece
+//    std::cout<< "test O" <<std::endl;
     tetris.add_piece('O',0,4);
     tetris.print();
     tetris.add_piece('I',0,1);
+    tetris.add_piece('I',0,0);
     std::cout << "print after adding another piece" << std::endl;
     tetris.print();
-    tetris.add_piece('I', 90, 2);
-    std::cout<<"print after adding 90 degree I";
+//    tetris.add_piece('I', 90, 1);
+//    std::cout<<"print after adding 90 degree I";
+//    tetris.print();
+    
+//    tetris.add_piece('O',270,2);
+//    std::cout<<"print after adding an O";
+//    tetris.print();
+//    tetris.add_piece('O',270,2);
+//    std::cout<<"print after adding an O";
+//    tetris.print();
+//    tetris.add_piece('I', 90, 2);
+//    std::cout<<"print after adding 90 degree I";
+//    tetris.print();
+//    tetris.add_piece('T', 0, 3);
+//    std::cout<<"print after adding T rotation 0";
+//    tetris.print();
+//    tetris.add_piece('T', 0, 3);
+//    std::cout<<"print after adding T rotation 0";
+//    tetris.print();
+//    tetris.add_piece('T', 180, 3);
+//    std::cout<<"print after adding T rotation 180";
+//    tetris.print();
+//    tetris.add_piece('T', 90, 3);
+//    std::cout<<"print after adding T rotation 90";
+//    tetris.print();
+//    tetris.add_piece('T', 90, 4);
+//    std::cout<<"print after adding T rotation 90";
+//    tetris.print();
+//    tetris.add_piece('T', 90, 1);
+//    std::cout<<"print after adding T rotation 90";
+//    tetris.print();
+//    tetris.add_piece('T', 270, 0);
+//    std::cout<<"print after adding T rotation 270";
+//    tetris.print();
+//    tetris.add_piece('I', 0, 6);
+//    tetris.print();
+//    tetris.add_piece('T', 270, 4);
+//    std::cout<<("add piece T 270 4");
+//    tetris.print();
+//    tetris.add_piece('I', 90, 0);
+    tetris.add_piece('Z',0,1);
     tetris.print();
+
+
+    
     // The get_max_height Tetris member function returns the height of
     // the tallest column on the board.
 //    assert (tetris.get_max_height() == 2);

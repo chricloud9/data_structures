@@ -101,10 +101,9 @@ void readRecipe(std::istream &istr, std::ostream &ostr, std::list<Recipe> &recip
     bool exists = false;
     std::string name, name2;
     istr >> name;
-    std::list<Recipe>::iterator p = recipes.begin();
-    for(;p!=recipes.end();p++){ //iterators allow us to use this alternate for loop syntax
+    for(std::list<Recipe>::iterator p = recipes.begin();p!=recipes.end();p++){ //iterators allow us to use this alternate for loop syntax
         if((*p).getName() == name){
-            ostr<<name<<" already exists"<<std::endl;
+            ostr<<"Recipe for "<<name<<" already exists"<<std::endl;
             
             exists = true;
             break;
@@ -112,7 +111,6 @@ void readRecipe(std::istream &istr, std::ostream &ostr, std::list<Recipe> &recip
     }
     // build the new recipe
     if(exists == false){
-        std::cout<<"name"<<name<<std::endl;
             Recipe r(name);
             while (1) {
                 istr >> units;
@@ -123,6 +121,7 @@ void readRecipe(std::istream &istr, std::ostream &ostr, std::list<Recipe> &recip
             }
             // add it to the list
             recipes.push_back(r);
+        recipes.sort(alpha);
             ostr << "Recipe for " << name << " added" << std::endl;
         }
         else{
@@ -143,17 +142,19 @@ void addIngredients(std::istream &istr, std::ostream &ostr, Kitchen &kitchen) {
     int units;
     std::string name;
     int count = 0;
-//    std::list<Ingredient>::iterator p =
     while (1) {
         istr >> units;
         if (units == 0) break;
         assert (units > 0);
         istr >> name;
         // add the ingredients to the kitchen
-        kitchen.addIngredient(name,units);
+        kitchen.addKitchenIngredient(name,units);
         count++;
     }
-    ostr << count << " ingredients added to kitchen" << std::endl;
+    if(count == 1)
+        ostr << "1 ingredient added to kitchen" <<std::endl;
+    else
+        ostr << count << " ingredients added to kitchen" << std::endl;
 }
 
 
@@ -165,64 +166,28 @@ void printRecipe(std::istream &istr, std::ostream &ostr,const std::list<Recipe> 
     std::list<Recipe>::const_iterator p = recipes.begin();
     for(;p!=recipes.end();p++){
         if((*p).getName() == name){
-            (*p).printRecipe(ostr);
+            break;
         }
     }
     if (p==recipes.end())
         ostr << "No recipe for "<<name<<"\n";
+    else
+        (*p).printRecipe(ostr);
 
 }
 
 
-void makeRecipe(std::istream &istr, std::ostream &ostr, const std::list<Recipe> &recipes, Kitchen &kitchen) {
+void makeRecipe(std::istream &istr, std::ostream &ostr, const std::list<Recipe> &recipes, Kitchen &kitchen){
     std::string name;
     istr >> name;
     for(std::list<Recipe>::const_iterator ritr = recipes.begin(); ritr!=recipes.end(); ritr++){
         if ( (*ritr).getName() == name){
             (*ritr).makeRecipe(name, ostr, kitchen);
-            break;
+            return;
         }
-        if (ritr == recipes.end()){
-            ostr << "No recipe for " <<name<<"\n";
-        }
-        
-    }
-    //make a boolean needIngredients = false
-    //make a std::list<Ingredient> ingredientsNeeded
-    //make a s
-    //
-    //iterate through the recipes list, compare the iterator.getName() to name
-    //now iterate through that recipe's ingredients list itr
-    //within that iteration loop, iterate through the kitchen's ingredients list jtr
-    //when you find the two ingredients with the same name
-    //check to see if recipe ingredients list iterator.getQuantity < kitchen.getQuantity
-    //if it is
-    //output, could not make recipe iterator.getName(), need
-    //if(itr.getQuantity() <2)
-    // ostr << 1 unit of << itr.getName()
-    //else
-    //ostr << itr.getQuantity() << units of << itr.getName()
-    //(kitchen ingredients list iterator.getQuantity - recipe ingredients list iterator.getQuantity)
-    // (*itr).getName()
-    //this will continue for all of the items in the list since it is a multi line output
-    //needIngredients = true;
-    //otherwise
-    //add that iterator object to the ingredientsNeeded list
-    // use kitchen.incrementQuantity(-(*iterator).getQuantity())
-    // but what if we subtract the quantity we needed from the kitchen and the next ingredient we need more of?
-    //would ordering the items in the ingredients list by quantity in both kitchen and recipe list solve this problem?
-    //not necessarily, because what if there are a lot of ingredients in the kitchen of one ingredient
-    //but we need a small amount of that ingredient in our recipe, while we need a lot of
-    //another ingredient that there isn't as much of
-    //this means we need to loop twice. once to check if there are enough ingredients, and once more
-    //to subtract those ingredients from the kitchen
-    //
-    // so, lastly... if(needIngredients == False), iterate through ingredientsNeeded, within that iteration
-    //iterate through kitchen ingredients
-    //if ingredientsNeeded.getName() == kitchenIngredients.getName()
-    // (kitchen_list_iterator).iterateQuantity(-(*ktr).getQuantity())
-    // ostr << "made" << recipe.getName()
     
+    }
+    ostr << "Don't know how to make " <<name<<"\n";
 }
 
 
@@ -241,4 +206,110 @@ void recipeSuggestions(std::ostream &ostr, const std::list<Recipe> &recipes, con
     // break inner loop
     // this should continue to the next item in the outer recipe list
     //
+    int count = 0;
+    for(std::list<Recipe>::const_iterator ritr = recipes.begin(); ritr!=recipes.end(); ritr++){
+        if((*ritr).suggestRecipe(ostr, kitchen)){
+            count++;
+        }
+    }
+    if( count == 0)
+        ostr << "No recipes can be prepared\n";
+    else if( count == 1)
+        ostr << "Recipe that can be prepared:\n";
+    else
+        ostr << "Recipes that can be prepared:\n";
+    for(std::list<Recipe>::const_iterator ritr = recipes.begin(); ritr!=recipes.end(); ritr++){
+        if((*ritr).suggestRecipe(ostr, kitchen)){
+            ostr <<"  "<< (*ritr).getName() <<std::endl;
+        }
+    }
+    
+}
+
+void menuSugeestions(std::ostream &stream, const std::list<Recipe> &recipes, Kitchen &kitchen){
+    //suggest a possible menu of items that can be made with the ingredients available
+    //std::list<Recipe> canMake;
+    //std::list<Ingredient> subtracted;
+    std::list<Ingredient> inTheKitchen;
+    inTheKitchen = kitchen.getIngredients();
+    std::list<Ingredient> clonedKitchen;
+    std::list<Recipe> mightUse;
+    std::list<Recipe> willUse;
+    for(std::list<Recipe>::const_iterator ritr = recipes.begin(); ritr!=recipes.end(); ritr++){//loop through recipes
+        if((*ritr).suggestRecipe(stream, kitchen)){
+            mightUse.push_back(*ritr);
+        }
+    
+    }
+    
+    mightUse.sort(quantSort);
+    for(std::list<Ingredient>::iterator kitch = inTheKitchen.begin(); kitch!=inTheKitchen.end(); kitch++){
+        clonedKitchen.push_back((*kitch));
+    }
+    for(std::list<Ingredient>::iterator clone = clonedKitchen.begin(); clone!=clonedKitchen.end(); clone++){std::list<Ingredient> ingList; //iterates through all ingredients in cloned kitchen for clone
+        for(std::list<Recipe>::iterator sub = mightUse.begin(); sub!=mightUse.end(); sub++){ //iterates through all recipes in mightuse for sub
+            int count = 0;
+            ingList = (*sub).getIngredients(); // creates a new ingredient list of  recipe ingredients from might use
+            for(std::list<Ingredient>::iterator ingSub = ingList.begin(); ingSub!=ingList.end(); ingSub++){ // iterates through recipe ingredients in might use
+                if(clone->getName() == ingSub ->getName()){ // compares them to kitchen ingredients
+                    // we are trying to see if our recipe count is the same as the number of ingredients
+                    //iterated through and we will use the Recipe.getIngredientCount() to verify
+                    int cloneUnits = clone->getUnits();
+                    int subUnits = ingSub->getUnits();
+                    int diff = cloneUnits-subUnits;
+                    if(diff>0){
+                        count++;
+                        if(sub->getIngredientCount() == count){
+                            willUse.push_back((*sub));
+                        }
+                    }
+                }
+            }
+            //we have our list of possible recipes we will use
+            //now we need to subtract from kitchen as many ingredients from the ordered by quantity list might use without going into negative numbers
+            // if subtracting from the kitchen will lead to a negative number, don't push that recipe to the list
+            //otherwise push it to the willUse list and then spit that out
+            
+        }
+    }
+    stream << "Menu suggestion for dinner:\n";
+    for(std::list<Recipe>::iterator yes = willUse.begin(); yes!=willUse.end(); yes++){
+        stream<<"  "<<(*yes).getName()<<",";
+    }
+    //first sort recipe list by quantity of ingredients in the recipe
+    //instantiate ints recipecount and match count
+    //loop through recipe.getIndredients()
+    //recipe counter++
+    //within that, loop through kitchen.getIngredients()
+    //and if the names are the same
+    //check to see if (the quantities for that item are the same){
+    //and if the quantities are the same
+    //check to see if(matchCounter == recipeCounter){
+    //return (or break I forget which)}
+    //matchCounter++
+    //}
+    // and if all of this is true, create an ingredient
+    //and push that ingredient to willUse
+    //for each recipe in the list
+    //run a Recipe function that compares items ingredients in the particular recipe
+    //to the ingredients in the kitchen ingredients list
+    //if an ingredient in the recipe book is not present in the kitchen
+    //return (to get out of loop and go to next item)
+    //otherwise, check the next item until you are at the end of the recipe list ingredients or at the end of the kitchen in
+
+    
+    
+    //use the suggest recipe function in recipe to first find a list of recipes you can make with the ignredients you have
+            // push these into might use
+    //then sort these ingredients with the quant sort
+    // then iterate through these and subtract ingredients a copy of the kitchen ingredients list as you go
+    
+    
+    
+    
+    
+    
+
+    
+    
 }

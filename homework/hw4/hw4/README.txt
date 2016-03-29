@@ -1,7 +1,7 @@
 HOMEWORK 4: GROCERY LISTS
 
 
-NAME:  < insert name >
+NAME:  < Christopher Chandler >
 
 
 COLLABORATORS AND OTHER RESOURCES:
@@ -10,7 +10,7 @@ List the names of everyone you talked to about this assignment
 LMS, etc.), and all of the resources (books, online reference
 material, etc.) you consulted in completing this assignment.
 
-< insert collaborators / resources >
+< TA 2/23, TA 2/25, ALAC >
 
 Remember: Your implementation for this assignment must be done on your
 own, as described in "Academic Integrity for Homework" handout.
@@ -34,17 +34,22 @@ w = maximum units of a single ingredient added with a single ’a’ command
 
 
 command 'r' / add a recipe:
+O(r)
 
 command 'a' / add ingredients to the kitchen:
+O(i)
 
 command 'p' / print a recipe:
+O(r+k)
 
 command 'm' / make a recipe:
+O(r+k*i+v)
 
 command 'k' / print the contents of the kitchen:
+O(i)
 
 command 's' / suggest recipes:
-
+O(r*k*i)
 
 (extra credit) command 'd' / suggest dinner menu:
 

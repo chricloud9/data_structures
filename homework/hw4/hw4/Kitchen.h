@@ -9,7 +9,7 @@ class Kitchen{
 public:
     Kitchen();
     
-    std::string addIngredient(std::string ing, int quantity);
+    std::string addKitchenIngredient(std::string ing, int quantity);
     
     void printIngredients(std::ostream &ostr);
     

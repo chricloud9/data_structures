@@ -29,3 +29,19 @@ std::string Ingredient::getName() const{
 bool ingSort(const Ingredient& ing1, const Ingredient& ing2){
     return ing1.getName() < ing2.getName();
 }
+
+bool alphaNumeric(const Ingredient& ing1, const Ingredient& ing2){
+    if(ing1.getUnits() < ing2.getUnits()){
+        return true;
+    }
+    else if(ing1.getUnits() == ing2.getUnits()){
+        if (ing1.getName() < ing2.getName()){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool operator==(const Ingredient& ing1, const Ingredient& ing2){
+    return ing1.getName() == ing2.getName();
+}

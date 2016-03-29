@@ -26,6 +26,9 @@ private:
 };
 
 bool ingSort(const Ingredient& ing1, const Ingredient&ing2);
+bool alphaNumeric(const Ingredient& ing1, const Ingredient& ing2);
+bool operator==(const Ingredient& ing1, const Ingredient& ing2);
+
 
 
 #endif /* Ingredient_hpp */

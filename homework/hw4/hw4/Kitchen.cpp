@@ -1,19 +1,22 @@
 #include "Kitchen.h"
+#include <string>
 #include <iostream>
 
 Kitchen::Kitchen(){
     
 }
 
-std::string  Kitchen::addIngredient(std::string ing, int quantity){
+std::string  Kitchen::addKitchenIngredient(std::string ing, int quantity){
     bool exists = false;
-    std::string s = std::to_string(quantity);
     std::string out;
-    std::list<Ingredient>::iterator p = ingredients.begin();
-    for(;p!=ingredients.end(); p++){
-        if((*p).getName() == ing){
+    
+    for(std::list<Ingredient>::iterator kitch = ingredients.begin();kitch!=ingredients.end(); kitch++){
+        if((*kitch).getName() == ing){
             exists = true;
-            (*p).changeQuantityBy(quantity);
+            Ingredient ingredient = (*kitch);
+            (*kitch).changeQuantityBy(quantity);
+            if((*kitch).getUnits() == 0)
+                ingredients.remove(ingredient);
             break;
         }
         
@@ -22,12 +25,12 @@ std::string  Kitchen::addIngredient(std::string ing, int quantity){
         Ingredient ingredient(ing, quantity);
         ingredients.push_back(ingredient);
     }
-    else if(quantity <2){
+    if(quantity == 1){
         return "1 ingredient added";
         
     }
     else
-        out= (s + " ingredients added");
+        out= (quantity + " ingredients added");
         return out;
 }
 
@@ -36,6 +39,14 @@ void Kitchen::incrementQuantity(int q){
 }
 
 void Kitchen::printIngredients(std::ostream &stream){
+    ingredients.sort(alphaNumeric);
+    stream << "In the kitchen:\n";
+    for(std::list<Ingredient>::iterator king = ingredients.begin(); king!=ingredients.end(); king++){
+        if(king->getUnits() ==1)
+            stream << "  1 unit of " << king->getName() <<std::endl;
+        else
+            stream <<"  " << king->getUnits() << " units of " << king->getName() << std::endl;
+    }
   
 }
 

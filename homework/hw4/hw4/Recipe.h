@@ -18,13 +18,20 @@ public:
     void printRecipe(std::ostream& output) const;
     
     void makeRecipe(std::string recipeName, std::ostream& output, Kitchen &kitchen) const;
+    
+    bool suggestRecipe(std::ostream& output, Kitchen kitchen) const;
+    
+    int getIngredientCount();
 
 private:
     std::string name;
     int units;
     std::list<Ingredient> ingredients;
+    int ingredientCount;
 
     
 };
+bool alpha(const Recipe& rec1, const Recipe& rec2);
+bool quantSort(const Recipe& rec1, const Recipe& rec2);
 
 #endif

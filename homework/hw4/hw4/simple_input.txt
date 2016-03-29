@@ -1,10 +1,16 @@
 r salad
-2 tomatoes
-1 lettuce
+1 juniper
+2 romaines
+3 plumbs
+4 apples
+1 mangos
+0
+
+a
+4 lettuce
 0
 a
-3 tomatoes
-4 lettuce
+4 tomatoes
 0
 p salad
 m salad
